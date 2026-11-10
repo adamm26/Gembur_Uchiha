@@ -1,0 +1,261 @@
+import 'package:flutter/material.dart';
+
+class MenuLogin extends StatefulWidget {
+  const MenuLogin({super.key});
+
+  @override
+  State<MenuLogin> createState() => _MenuLoginState();
+}
+
+class _MenuLoginState extends State<MenuLogin> {
+  // Controller untuk mengambil teks dari inputan
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isObscure = true; // Untuk tombol sembunyi/tampil kata sandi
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F6F8), // Latar belakang terang bersih
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+
+              // 1. Logo Aplikasi (Kotak Biru Muda dengan Ikon Rumah & Air)
+              Container(
+                width: 64,
+                height: 64,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFDDF4FF),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Icon(
+                  Icons.home_work_rounded,
+                  color: Color(0xFF00B2FE),
+                  size: 36,
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // 2. Header Judul & Deskripsi
+              const Text(
+                'Selamat Datang!',
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Masuk untuk pantau sungai dan tetap siaga bersama warga.',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF8C8C8C),
+                  height: 1.4,
+                ),
+              ),
+
+              const SizedBox(height: 32),
+
+              // 3. Input Email atau Nomor Telepon
+              const Text(
+                'Email atau nomor telepon',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF333333),
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  hintText: 'Masukkan email atau nomor telepon',
+                  hintStyle: const TextStyle(color: Color(0xFFB0B0B0), fontSize: 14),
+                  prefixIcon: const Icon(Icons.person_outline, color: Color(0xFF9E9E9E)),
+                  filled: true,
+                  fillColor: const Color(0xFFE8F1F5),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // 4. Input Kata Sandi
+              const Text(
+                'Kata sandi',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF333333),
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _passwordController,
+                obscureText: _isObscure,
+                decoration: InputDecoration(
+                  hintText: 'Masukkan kata sandi',
+                  hintStyle: const TextStyle(color: Color(0xFFB0B0B0), fontSize: 14),
+                  prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFF9E9E9E)),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isObscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                      color: const Color(0xFF9E9E9E),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isObscure = !_isObscure;
+                      });
+                    },
+                  ),
+                  filled: true,
+                  fillColor: const Color(0xFFE8F1F5),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+              ),
+
+              // Tautan Lupa Kata Sandi (Kanan)
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    // Aksi jika lupa kata sandi diklik
+                  },
+                  child: const Text(
+                    'Lupa kata sandi',
+                    style: TextStyle(
+                      color: Color(0xFF00B2FE),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              // 5. Tombol Masuk Utama
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // 1. Ambil teks yang diketik user
+                    String emailInput = _emailController.text;
+                    String passwordInput = _passwordController.text;
+
+                    // 2. TENTUKAN EMAIL & PASSWORD DI SINI (Contoh Statis)
+                    String emailBenar = "gembur@pojok";
+                    String passwordBenar = "123456";
+
+                    // 3. Cek apakah cocok
+                    if (emailInput == emailBenar && passwordInput == passwordBenar) {
+                      // Jika benar, tampilkan pesan sukses (nanti bisa diganti pindah halaman Dashboard)
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Login Berhasil! Selamat datang Admin.'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Email atau kata sandi salah!'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF00B2FE),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    'Masuk',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Opsi Pindah ke Halaman Daftar
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Belum punya akun? ',
+                    style: TextStyle(color: Color(0xFF8C8C8C), fontSize: 13),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // Aksi navigasi ke halaman register
+                    },
+                    child: const Text(
+                      'Daftar sekarang',
+                      style: TextStyle(
+                        color: Color(0xFF00B2FE),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 36),
+
+              // 6. Card Banner Edukasi di Bagian Bawah
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFDDF4FF),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(Icons.verified_user_outlined, color: Color(0xFF00B2FE), size: 22),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Informasi lebih cepat, langkah siaga lebih tepat.',
+                        style: TextStyle(
+                          color: Color(0xFF00B2FE),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
